@@ -1,0 +1,2 @@
+[default]
+192.168.200.132 ansible_python_interpreter=/usr/bin/python3

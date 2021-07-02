@@ -1,0 +1,12 @@
+---
+- name: Fetch the repo from GitHub
+  git:
+    repo: 'https://github.com/Zanxamaru/anapaya.git'
+    clone: yes
+    dest: ./anapayapp
+    force: yes
+
+- name: Docker-compose up -d
+  shell: docker-compose up -d --build --remove-orphans
+  args:
+    chdir: ./anapayapp

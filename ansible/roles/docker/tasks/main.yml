@@ -1,0 +1,32 @@
+---
+- name: Add GPG key
+  apt_key:
+    url: https://download.docker.com/linux/debian/gpg
+    state: present
+
+- name: Add docker repository to apt
+  apt_repository: 
+    repo: "deb [arch=amd64] https://download.docker.com/linux/debian buster edge"
+    state: present
+    update_cache: yes 
+
+- name: Update cache and Install docker
+  apt:
+    name: "{{ item }}"
+    state: latest
+    update_cache: yes
+  loop:
+    - docker-ce
+    - docker-ce-cli
+    - docker-compose
+
+- name: Install Python Docker module
+  pip:
+    name: docker
+    executable: pip3
+
+- name: Enable docker services
+  systemd:
+    name: docker
+    enabled: yes
+    masked: no

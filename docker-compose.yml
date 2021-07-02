@@ -1,0 +1,69 @@
+version: '3'
+services:
+  app:
+    build:
+      context: app
+      dockerfile: Dockerfile
+    container_name: app
+    hostname: app
+    image: app
+    restart: unless-stopped
+    environment:
+      MONGODB_DATABASE: appdb
+      MONGODB_USERNAME: appuser
+      MONGODB_PASSWORD: apppass
+      MONGODB_HOSTNAME: mongodb
+    volumes:
+      - appdata:/var/www
+    depends_on:
+      - mongodb
+    networks:
+      - frontend
+      - backend
+
+  mongodb:
+    image: bitnami/mongodb:4.4.3
+    container_name: mongodb
+    hostname: mongodb
+    restart: unless-stopped
+    command: mongod --auth
+    environment:
+      MONGODB_USERNAME: appuser
+      MONGODB_PASSWORD: apppass
+      MONGODB_DATABASE: appdb
+    volumes:
+      - mongodbdata:/bitnami/mongodb
+    networks:
+      - backend
+
+  webserver:
+    build:
+      context: nginx
+      dockerfile: Dockerfile
+    image: webserver
+    container_name: webserver
+    hostname: webserver
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - nginxdata:/var/log/nginx
+    depends_on:
+      - app
+    networks:
+      - frontend
+
+networks:
+  frontend:
+    driver: bridge
+  backend:
+    driver: bridge
+
+volumes:
+  mongodbdata:
+    driver: local
+  appdata:
+    driver: local
+  nginxdata:
+    driver: local

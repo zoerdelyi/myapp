@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% block title %}You've logged in! {% endblock %}
+
+{% block content %}
+<div id="loggedin">
+    <div class="container">
+        <div id="loggedin-row" class="row justify-content-center align-items-center">
+            <div id="loggedin-column" class="col-md-6">
+                <div id="loggedin-box" class="col-md-12">
+                    <h3 style="margin-top:40px">You have logged in with:</h3>
+                    <h3>{{ email }}</h3>
+                    <div>
+                        <a class="btn btn-info btn-md signout-button" href="/logout">Sign Out</a>
+
+                        <a class="btn btn-info btn-md signup-button" href="/signup">Signup</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
